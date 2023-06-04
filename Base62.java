@@ -3,7 +3,7 @@
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Objects;
-
+import java.math.BigInteger;
 public class Base62 {
 
   private static String[] alphabet =
@@ -14,7 +14,7 @@ public class Base62 {
   private static HashMap<String, Integer> hex2Ten = createMapHex2Ten();
 
   private static int BASE = 62;
-  
+
 
   //test
   public static void main(String[] args) {
@@ -22,11 +22,14 @@ public class Base62 {
     .set("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
     .set(62);
 
+    System.out.println(b.encode(1234512345608900043l));
+    System.out.println(b.decode("1TC4w8T9MtP"));
 
     System.out.println(b.encode(12345.12345608900043d));
     System.out.println(b.decode("5YpXsLkbJrc", 1d));
 
-
+    System.out.println(b.encode(12345.12345608900043f));
+    System.out.println(b.decode("1HlWla", 1f));
   }
 
 
@@ -129,8 +132,9 @@ public class Base62 {
       negative = true;
       s = s.substring(1);
     }
-    long a = hexDecodeLong(s, radix);
+    int a = hexDecodeInt(s, radix);
     if (negative) return -fromBytes(toByteArray(a), b);
+
     return fromBytes(toByteArray(a), b);
   }
 
@@ -268,7 +272,7 @@ public class Base62 {
     // return new byte[] {(byte) (intBits >> 24), (byte) (intBits >> 16), (byte) (intBits >> 8),
     // (byte) (intBits)};
     return ByteBuffer.allocate(4).putFloat(n).array();
-    // return  new BigInteger(Integer.toBinaryString(Float.floatToIntBits(n)), 2).toByteArray();
+    //return  new BigInteger(Integer.toBinaryString(Float.floatToIntBits(n)), 2).toByteArray();
 
   }
 
